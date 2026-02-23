@@ -23,7 +23,7 @@ export default function Header() {
                 <span className="text-xl font-bold">AI</span>
                 </a>
               </div>
-              <a href="/" className="text-slate-900 text-xl font-bold">Mining Talent</a>
+              <a href="/" className="text-slate-900 text-xl font-bold">Talent Mining</a>
             </div>
             
             <div className="hidden md:flex items-center space-x-8">

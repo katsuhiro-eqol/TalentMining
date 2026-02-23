@@ -3,20 +3,20 @@ import Header from "./components/headerbar"
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  title: "インバウンドコンシェルジュ",
-  description: "サービス名はインバウンドコンシェルジュ。日本語でデータ登録するだけで多言語対応可能な質問対応サービス。事業主自らが簡単にデータ追加や更新できる柔軟性が特徴。登録した情報だけでなくインターネット情報も参照可能。開発・運営は株式会社eQOL。",
-  keywords:"AI,インバウンド,inbound,コンシェルジュ,低価格,簡単,ホテル,イベント,ショップ,公共施設,役所,案内,質問応答,STT,TTS,多言語",
+  title: "Talent Mining",
+  description: "AIアシスタントとの対話の内容を解析して、技術ポートフォリオや課題解決の特徴と技術力などを言語化するサービス。開発者は山下克宏、運営は株式会社eQOL。",
+  keywords:"AI,ChatGPT,Gemini,Claude,対話ログ、質問ログ、解析",
   icons: {
     icon: '/icons8-ai-48.png', 
   },
   openGraph: {
-    title: 'インバウンドコンシェルジュ',
-    description: '日本語のQAデータをCSVファイルで登録するだけで、多言語対応の高性能なAIコンシェルジュが構築できます',
-    url: 'https://aiconcierge.vercel.app/inboundSite',
+    title: 'Talent Mining',
+    description: '普段からお世話になっているAIアシスタントとの対話内容から自分の強みや特徴を言語化するサービス',
+    url: 'https://talent-mining.vercel.app/',
     images: ['/icons8-ai-48.png'],
   },
   alternates: {
-    canonical: 'https://aiconcierge.vercel.app/inboundSite'
+    canonical: 'https://talent-mining.vercel.app/'
   },
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
 };

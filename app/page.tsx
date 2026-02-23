@@ -38,7 +38,7 @@ export default function Home() {
         <section className="rounded-3xl bg-white p-8 shadow-sm border">
         {data && (
             <div>
-              <p className="text-xl font-semibold">解析結果の例<span className="text-sm text-green-500">（このアプリの作者の質問ログを解析しました）</span></p>
+              <p className="text-xl font-semibold">解析結果の例<span className="text-sm text-green-500">（このアプリ開発者の質問ログをサンプルとしています）</span></p>
               <ResultView data={data} />
             </div>
           )}
