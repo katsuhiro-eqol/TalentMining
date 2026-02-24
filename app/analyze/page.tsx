@@ -68,11 +68,16 @@ export default function Page() {
       if (!res.ok) {
         throw new Error(submitJson.error ?? `API error ${res.status}`);
       }
-      const { jobId } = submitJson;
+      const { jobId, documentId } = submitJson;
 
       // ── ステップ2: ポーリングで結果を待つ ──
       const result = await pollJob(jobId);
       const parsed = AnalyzeApiResponseSchema.parse(result);
+      if (documentId && parsed.input.threads.length>0){
+        const newTitle = parsed.input.threads.join(" ")
+        const newData:StoredData = {id:documentId, title:newTitle}
+        setStoredData((prev) => [...prev,newData])
+      }
       setData(parsed);
     } catch (e: any) {
       setError(e?.message ?? "解析に失敗しました");

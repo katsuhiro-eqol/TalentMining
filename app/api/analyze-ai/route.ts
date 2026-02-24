@@ -194,17 +194,28 @@ export async function POST(req: Request) {
     });
   }
 
-  // ── ② Firestore に「処理中」ジョブドキュメントを作成 ──
+  // ── ② Firestore に「処理中」ジョブ + Analysis ドキュメントを作成 ──
+  const inputMeta = {
+    threads: threads.map((t) => t.threadId),
+    questionCount: threads.reduce((a, t) => a + t.questions.length, 0),
+  };
+
   const jobRef = await db.collection("jobs").add({
     deviceId,
     status: "pending",
-    input: {
-      threads: threads.map((t) => t.threadId),
-      questionCount: threads.reduce((a, t) => a + t.questions.length, 0),
-    },
+    input: inputMeta,
     createdAt: new Date(),
   });
   const jobId = jobRef.id;
+
+  // 後で結果を書き込む Analysis ドキュメントを先に作成し、ID をレスポンスで返せるようにする
+  const analysisRef = await db.collection("Analysis").add({
+    deviceId,
+    status: "pending",
+    input: inputMeta,
+    createdAt: new Date(),
+  });
+  const documentId = analysisRef.id;
 
   // ── ③ after() でバックグラウンド処理を登録 ──
   //  after() に渡した関数は、レスポンスをクライアントに返した「後」に
@@ -255,15 +266,13 @@ export async function POST(req: Request) {
         completedAt: new Date(),
       });
 
-      // Analysis コレクションにも保存（既存の保存先を維持）
-      await db.collection("Analysis").add({
+      // 先に作成した Analysis ドキュメントを完了状態で更新
+      await analysisRef.update({
+        status: "done",
         deviceId,
-        input: {
-          threads: threads.map((t) => t.threadId),
-          questionCount: threads.reduce((a, t) => a + t.questions.length, 0),
-        },
+        input: inputMeta,
         analysis: parsed,
-        createdAt: new Date(),
+        completedAt: new Date(),
       });
     } catch (err) {
       console.error("Background analysis failed:", err);
@@ -272,9 +281,14 @@ export async function POST(req: Request) {
         error: err instanceof Error ? err.message : "Unknown error",
         completedAt: new Date(),
       });
+      await analysisRef.update({
+        status: "error",
+        error: err instanceof Error ? err.message : "Unknown error",
+        completedAt: new Date(),
+      });
     }
   });
 
-  // ── ④ クライアントにはすぐ jobId を返す（数秒以内） ──
-  return NextResponse.json({ jobId });
+  // ── ④ クライアントにはすぐ jobId と Analysis の documentId を返す（数秒以内） ──
+  return NextResponse.json({ jobId, documentId });
 }
