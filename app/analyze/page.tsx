@@ -239,22 +239,22 @@ export default function Page() {
         {!data && (
         <div className="mx-10">
           <UploadFiles files={files} setFiles={setFiles} />
-        <div className="flex items-center mt-5">
+        <div className="mt-5 flex flex-nowrap items-center gap-3">
           <button
             onClick={onAnalyze}
             disabled={!isReady}
-            className={`text-sm px-3 py-2 border rounded-lg flex items-center space-x-2
+            className={`inline-flex whitespace-nowrap text-sm px-3 py-2 mr-10 border rounded-lg items-center justify-center
               ${loading 
                 ? 'bg-gray-200 cursor-not-allowed' 
                 : 'bg-gray-500 hover:bg-gray-600 text-white'}`}
           >
             
-            <span>{loading ? '解析中...' : '解析する'}</span>
+            <span className="whitespace-nowrap">{loading ? '解析中...' : '解析する'}</span>
           </button>
-          <div className="ml-auto">
-          <div className="relative inline-block">
+          <div className="w-8 shrink-0" />
+          <div className="relative ml-auto min-w-0 flex-1 max-w-[18rem]">
             <select 
-                className="appearance-none text-xs border rounded-lg px-3 py-2 pr-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-300" 
+                className="block w-full min-w-0 appearance-none text-xs border rounded-lg px-3 py-2 pr-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-300" 
                 value={selected} 
                 onChange={selectData}
                 style={{ 
@@ -266,30 +266,28 @@ export default function Page() {
                 return <option className="text-center" key={data.id} value={data.id}>{data.title}</option>;
                 })}
             </select>
-            </div>
             <ChevronDown
               size={16}
               className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
             />
           </div>
-          
-          {uploadStatus && (
-            <div className={`ml-4 flex items-center
-              ${uploadStatus === 'success' ? 'text-green-600' : 'text-red-600'}`}>
-              {uploadStatus === 'success' ? (
-                <>
-                  <CheckCircle className="h-5 w-5 mr-2" />
-                  <span>アップロード完了</span>
-                </>
-              ) : (
-                <>
-                  <AlertCircle className="h-5 w-5 mr-2" />
-                  <span>アップロード失敗。再試行してください。</span>
-                </>
-              )}
-            </div>
-          )}
         </div>
+        {uploadStatus && (
+          <div className={`mt-3 flex items-center
+            ${uploadStatus === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+            {uploadStatus === 'success' ? (
+              <>
+                <CheckCircle className="h-5 w-5 mr-2" />
+                <span>アップロード完了</span>
+              </>
+            ) : (
+              <>
+                <AlertCircle className="h-5 w-5 mr-2" />
+                <span>アップロード失敗。再試行してください。</span>
+              </>
+            )}
+          </div>
+        )}
         </div>
         )}
 
@@ -306,6 +304,7 @@ export default function Page() {
 }
 
 /*
+<div className="relative ml-auto min-w-0 flex-1 max-w-[18rem]">
           <button className="ml-4 my-4 text-sm px-3 py-1 rounded-lg bg-gray-200" onClick={() => anotherAnalysis()}>別のデータを解析</button>
           <button className="ml-4 my-2 px-3 py-1 rounded-lg bg-gray-200" onClick={() => saveResJSON()}>JSONを保存</button>
           <select 
