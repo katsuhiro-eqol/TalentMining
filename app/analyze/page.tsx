@@ -52,7 +52,11 @@ export default function Page() {
     setData(null);
 
     if (files.length === 0) {
-      setError("txtファイルを選択してください");
+      alert("TXTファイルが登録されていません")
+      return;
+    }
+    if (files.length > 5) {
+      alert("最大5ファイルです")
       return;
     }
 
